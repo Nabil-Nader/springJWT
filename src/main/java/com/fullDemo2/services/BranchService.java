@@ -1,4 +1,4 @@
-package com.fullDemo2.services.impl;
+package com.fullDemo2.services;
 
 import com.fullDemo2.Entity.Branch;
 import com.fullDemo2.dto.BranchDTO;
