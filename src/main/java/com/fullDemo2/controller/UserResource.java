@@ -2,6 +2,7 @@ package com.fullDemo2.controller;
 
 
 import com.fullDemo2.Entity.*;
+import com.fullDemo2.dto.UserDTO;
 import com.fullDemo2.exception.*;
 import com.fullDemo2.exception.domain.UserNotFoundException;
 import com.fullDemo2.exception.domain.UsernameExistException;
@@ -57,7 +58,7 @@ public class UserResource extends ExceptionHandling {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody MyUser user) {
+    public ResponseEntity<?> login(@RequestBody UserDTO user) {
         authenticate(user.getUsername(), user.getPassword());
         MyUser loginUser = userService.findUserByUsername(user.getUsername());
         UserPrincipal userPrincipal = new UserPrincipal(loginUser);
@@ -93,20 +94,9 @@ public class UserResource extends ExceptionHandling {
 
 
 
-    /*
-    String name,
-             String username,
-             String role,
-             String password,
-             Long uId,
-             Long cId,
-             Long bId
-
-     */
-
     @SneakyThrows
     @PostMapping("/register")
-    public ResponseEntity<MyUser> register(@RequestBody MyUser user) throws UserNotFoundException, UsernameExistException {
+    public ResponseEntity<MyUser> register(@RequestBody UserDTO user) throws UserNotFoundException, UsernameExistException {
         MyUser newUser = userService.register(
                 user.getName(),
                 user.getUsername(),
@@ -216,16 +206,7 @@ public class UserResource extends ExceptionHandling {
         return new ResponseEntity<List<MyUser>>(list, new HttpHeaders(), HttpStatus.OK);
     }
 
-    @GetMapping("branchs")
-    public ResponseEntity<List<Branch>> getAllBranchs(
-            @RequestParam(defaultValue = "0") Integer pageNo,
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy)
-    {
-        List<Branch> list = userService.getAllBranch(pageNo, pageSize, sortBy);
 
-        return new ResponseEntity<List<Branch>>(list, new HttpHeaders(), HttpStatus.OK);
-    }
 
     @GetMapping("colleges")
     public ResponseEntity<List<College>> getAllBCollege(
@@ -250,6 +231,14 @@ public class UserResource extends ExceptionHandling {
         return new ResponseEntity<List<University>>(list, new HttpHeaders(), HttpStatus.OK);
     }
 
+    @GetMapping("student-branch")
+    public ResponseEntity<List<MyUser>> userBranch(@RequestParam("bname")String bname){
+
+        List<MyUser> users = userService.findStudentWithBranch(bname);
+
+        return new ResponseEntity<List<MyUser>>(users, new HttpHeaders(), HttpStatus.OK);
+    }
+
 
 
 
@@ -262,9 +251,10 @@ public class UserResource extends ExceptionHandling {
         return response(OK, USER_DELETED_SUCCESSFULLY);
     }
 
-    /*********************************************************************************
-     Helper Methode
-     ******************************************************************************/
+    /********************************************************************************
+                             Helper Methode
+     *****************************************************************************/
+
 
 
     private void authenticate(String username, String password) {

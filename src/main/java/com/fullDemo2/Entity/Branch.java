@@ -19,14 +19,14 @@ public class Branch implements Serializable {
 
     private String bName ;
 
-    @OneToMany( fetch = FetchType.EAGER)
+    @OneToMany( fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "branch_id",referencedColumnName = "id")
-
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Set<MyUser> myUsers ;
 
     @Column(name = "college_id")
-    @JsonIgnore
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+
+
     private Long college_id;
 
 

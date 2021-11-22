@@ -1,6 +1,7 @@
 package com.fullDemo2.services.impl;
 
 import com.fullDemo2.Entity.*;
+import com.fullDemo2.dto.UserDTO;
 import com.fullDemo2.enumeration.Role;
 import com.fullDemo2.repo.BranchRepo;
 import com.fullDemo2.repo.CollegeRepo;
@@ -24,6 +25,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import static com.fullDemo2.constant.UserImplConstant.FOUND_USER_BY_USERNAME;
@@ -127,6 +130,46 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return user;
     }
 
+
+    @Override
+    public void registerUser(UserDTO dto) {
+        MyUser user = new MyUser();
+        user.setUserId(generateUserId());
+        user.setName(dto.getName());
+        user.setUsername(dto.getUsername());
+        user.setPassword(encodePassword(dto.getPassword()));
+        user.setRole(getRoleEnumName(dto.getRole()).name());
+        user.setAuthorities(getRoleEnumName(dto.getRole()).getAuthorities());
+        user.setUniversity_id(dto.getUniversity_id());
+        user.setBranch_id(dto.getBranch_id());
+        user.setCollege_id(dto.getCollege_id());
+
+        userRepository.save(user);
+
+
+    }
+
+    @Override
+    public void add(UserDTO dto) {
+        MyUser user ;
+
+        if(dto.getUserId() != null){
+            user = userRepository.findMyUserByUsername(dto.getUsername());
+        }else{
+            user = new MyUser();
+            user.setUserId(generateUserId());
+            user.setName(dto.getName());
+            user.setUsername(dto.getUsername());
+            user.setPassword(encodePassword(dto.getPassword()));
+            user.setRole(getRoleEnumName(dto.getRole()).name());
+            user.setAuthorities(getRoleEnumName(dto.getRole()).getAuthorities());
+            user.setUniversity_id(dto.getUniversity_id());
+            user.setBranch_id(dto.getBranch_id());
+            user.setCollege_id(dto.getCollege_id());
+        }
+
+    }
+
     @Override
     public List<MyUser> getUsers() {
         return userRepository.findAll();
@@ -193,7 +236,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return null;
     }
 
-//    Get ALL entity With pagination
+    @Override
+    public List<MyUser> findByBranchToCollege(String cname, String bname) {
+        College college = collegeRepo.findCollegeBycName(cname);
+        Branch branch = branchRepo.findBranchBybName(bname);
+
+        List<MyUser>users = new ArrayList();
+
+        for(MyUser u : branch.getMyUsers()) {
+
+            if(u.getId()== branch.getId() && u.getId()==college.getId()){
+                users.add(u);
+            }
+        }
+
+        return users;
+
+    }
+
+    //    Get ALL entity With pagination
 
     @Override
     public List<MyUser> getAllUser(Integer pageNo ,Integer pageSize,String sortBy ){
@@ -210,20 +271,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     }
 
-    @Override
-    public List<Branch> getAllBranch(Integer pageNo ,Integer pageSize,String sortBy ){
-
-        Pageable paging = PageRequest.of(pageNo,pageSize, Sort.by(sortBy));
-
-        Page<Branch> pagedResult = branchRepo.findAll(paging);
-
-        if(pagedResult.hasContent()){
-            return pagedResult.getContent();
-        }else{
-            return new ArrayList<Branch>();
-        }
-
-    }
 
 
     @Override
@@ -257,10 +304,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     }
 
+    @Override
+    public List<MyUser> findStudentWithBranch(String b_name) {
+        List<MyUser> users = new ArrayList<>() ;
+        Branch b = branchRepo.findBranchBybName(b_name);
+        List<MyUser> allUSer = userRepository.findAll();
+        for(MyUser u : allUSer) {
 
+            if(u.getBranch_id()== b.getId()){
+                users.add(u);
+            }
+        }
 
-
-
+        return users;
+    }
 
     private String encodePassword(String password) {
         return passwordEncoder.encode(password);
