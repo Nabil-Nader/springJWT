@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-//@Component
+@Component
 public class EncryptionFilter extends AbstractHttpMessageConverter<Object> {
 
 	@Autowired
