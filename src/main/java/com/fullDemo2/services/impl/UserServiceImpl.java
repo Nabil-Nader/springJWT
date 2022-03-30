@@ -59,9 +59,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             LOGGER.error(NO_USER_FOUND_BY_USERNAME + username);
             throw new UsernameNotFoundException(NO_USER_FOUND_BY_USERNAME + username);
         } else {
-//            user.setLastLoginDateDisplay(user.getLastLoginDate());
-//            user.setLastLoginDate(new Date());
-//            userRepository.save(user);
+
             UserPrincipal userPrincipal = new UserPrincipal(user);
             LOGGER.info(FOUND_USER_BY_USERNAME + username);
             return userPrincipal;
@@ -79,7 +77,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         MyUser user = new MyUser();
         user.setUserId(generateUserId());
 
-        user.setName(name);
+        user.setName("name");
         user.setUsername(username);
         user.setPassword(encodePassword(password));
 
@@ -88,9 +86,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setAuthorities(getRoleEnumName(role).getAuthorities());
 
         user.setAuthorities(getRoleEnumName(role).getAuthorities());
-        user.setUniversity_id(uId);
-        user.setBranch_id(bId);
-        user.setCollege_id(cId);
+
 
 
 
@@ -110,14 +106,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         MyUser user = new MyUser();
         user.setUserId(generateUserId());
-        user.setName(name);
+        user.setName("name");
         user.setUsername(username);
         user.setPassword(encodePassword(password));
         user.setRole(getRoleEnumName(role).name());
         user.setAuthorities(getRoleEnumName(role).getAuthorities());
-        user.setUniversity_id(uId);
-        user.setBranch_id(bId);
-        user.setCollege_id(cId);
 
         System.out.println("USer branch: "+user.getBranch_id());
         System.out.println("User univ: "+user.getUniversity_id());
