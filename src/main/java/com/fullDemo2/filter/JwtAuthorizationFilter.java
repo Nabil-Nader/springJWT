@@ -8,14 +8,10 @@ import com.fullDemo2.services.impl.UserServiceImpl;
 import com.fullDemo2.utility.JWTTokenProvider;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -25,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static com.fullDemo2.constant.SecurityConstant.OPTIONS_HTTP_METHOD;
 import static com.fullDemo2.constant.SecurityConstant.TOKEN_PREFIX;
@@ -74,10 +69,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     UserPrincipal userPrincipal = (UserPrincipal) userDetailsService.loadUserByUsername(username);
 
                     List<GrantedAuthority> authorities = jwtTokenProvider.getAuthorities(userPrincipal);
-
-
-
-                    // UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
 
                 /*
                     After setting the Authentication in the context, we specify

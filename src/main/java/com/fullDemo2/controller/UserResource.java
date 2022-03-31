@@ -145,6 +145,13 @@ public class UserResource extends ExceptionHandling {
         return new ResponseEntity<>(newUser, OK);
     }
 
+    @GetMapping("/role")
+    @PreAuthorize("hasAnyAuthority('user:delete')")
+    public ResponseEntity<String> displaySimpleText  (){
+
+        return new ResponseEntity<>("yes he have the authorize",ACCEPTED);
+    }
+
 
 
     @GetMapping("/find/{username}")

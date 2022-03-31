@@ -85,7 +85,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setRole(getRoleEnumName(role).name());
         user.setAuthorities(getRoleEnumName(role).getAuthorities());
 
-        user.setAuthorities(getRoleEnumName(role).getAuthorities());
 
 
 
