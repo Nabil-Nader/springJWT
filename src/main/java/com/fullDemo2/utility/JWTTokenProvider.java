@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.fullDemo2.Entity.UserPrincipal;
+import com.fullDemo2.enumeration.Role;
 import io.jsonwebtoken.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -70,19 +71,21 @@ public class JWTTokenProvider implements Serializable {
 
 
 
-   /* public String generateJwtToken(
-            UserPrincipal userPrincipal) {
+   public String generateJwtTokenFromUser(UserPrincipal userPrincipal) {
 
 
         String[] claims =
                 getClaimsFromUser(userPrincipal);
-        return JWT.create().withIssuer(GET_KIWE).withAudience(GET_ARRAYS_ADMINISTRATION)
+        String [] newClaims= getClaimsFromUserRole(userPrincipal);
+        return JWT.create()
+
                 .withIssuedAt(new Date()).withSubject(userPrincipal.getUsername())
                 .withArrayClaim(AUTHORITIES, claims).withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .withArrayClaim("role", newClaims)
                 .sign(HMAC512(secret.getBytes()));
     }
 
-*/
+
 
     public String generateRefreshToken(Map<String,Object> claims,String username ){
 
@@ -181,6 +184,15 @@ public class JWTTokenProvider implements Serializable {
         }
         return authorities.toArray(new String[0]);
     }
+
+    private String[] getClaimsFromUserRole(UserPrincipal user) {
+        List<String> role = new ArrayList<>();
+
+            role.add(user.getUser().getRole());
+
+        return role.toArray(new String[0]);
+    }
+
 
 
    /* public String generateTokenFromUsername(String username) {

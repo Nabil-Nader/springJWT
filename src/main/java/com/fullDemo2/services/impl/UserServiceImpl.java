@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         MyUser user = new MyUser();
         user.setUserId(generateUserId());
 
-        user.setName(name);
+        user.setName("name");
         user.setUsername(username);
         user.setPassword(encodePassword(password));
 
@@ -85,10 +85,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setRole(getRoleEnumName(role).name());
         user.setAuthorities(getRoleEnumName(role).getAuthorities());
 
-        user.setAuthorities(getRoleEnumName(role).getAuthorities());
-        user.setUniversity_id(uId);
-        user.setBranch_id(bId);
-        user.setCollege_id(cId);
+
 
 
 
@@ -108,14 +105,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         MyUser user = new MyUser();
         user.setUserId(generateUserId());
-        user.setName(name);
+        user.setName("name");
         user.setUsername(username);
         user.setPassword(encodePassword(password));
         user.setRole(getRoleEnumName(role).name());
         user.setAuthorities(getRoleEnumName(role).getAuthorities());
-        user.setUniversity_id(uId);
-        user.setBranch_id(bId);
-        user.setCollege_id(cId);
 
         System.out.println("USer branch: "+user.getBranch_id());
         System.out.println("User univ: "+user.getUniversity_id());

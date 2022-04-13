@@ -63,10 +63,10 @@ public class UserResource extends ExceptionHandling {
         UserPrincipal userPrincipal = new UserPrincipal(loginUser);
 
 //        HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
-        String access_token = jwtTokenProvider.generateJwtToken(userPrincipal);
+        String access_token = jwtTokenProvider.generateJwtTokenFromUser(userPrincipal);
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userPrincipal.getUser().getId());
 
-        return new ResponseEntity<>( new JWTResponse(access_token,refreshToken.getToken(),userPrincipal.getUser().getUserId()),OK);
+        return new ResponseEntity<>( new JWTResponse(access_token,refreshToken.getToken(),userPrincipal.getUser().getUsername()),OK);
     }
 
     @PostMapping("/refreshtoken")
@@ -110,7 +110,7 @@ public class UserResource extends ExceptionHandling {
         MyUser newUser = userService.register(
                 user.getName(),
                 user.getUsername(),
-                user.getRole(),
+                user.getRole().toString(),
                 user.getPassword(),
                 user.getUniversity_id(),
                 user.getCollege_id(),
@@ -143,6 +143,13 @@ public class UserResource extends ExceptionHandling {
 
         );
         return new ResponseEntity<>(newUser, OK);
+    }
+
+    @GetMapping("/role")
+    @PreAuthorize("hasAnyAuthority('user:delete')")
+    public ResponseEntity<String> displaySimpleText  (){
+
+        return new ResponseEntity<>("yes he have the authorize",ACCEPTED);
     }
 
 
