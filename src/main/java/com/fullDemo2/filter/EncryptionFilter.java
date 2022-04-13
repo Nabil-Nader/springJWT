@@ -122,9 +122,8 @@ public class EncryptionFilter extends AbstractHttpMessageConverter<Object> {
 			decryptRequestString = AES.decrypt(requestJsonObject.getString("data"));
 			System.out.println("decryptRequestString: " + decryptRequestString);
 
-			JSONObject decryptedJsonObject = new JSONObject(decryptRequestString.replace("\n", ""));
+//			JSONObject decryptedJsonObject = new JSONObject(decryptRequestString.replace("\n", ""));
 			System.out.println("------------------------------------------------");
-			System.out.println("decryptedJsonObject:" + decryptedJsonObject);
 
 			InputStream targetStream = new ByteArrayInputStream(decryptRequestString.getBytes());
 
