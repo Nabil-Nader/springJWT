@@ -1,6 +1,7 @@
 package com.fullDemo2.config;
 
 //import com.fullDemo2.filter.CustomAuthenticationFilter;
+
 import com.fullDemo2.filter.JwtAccessDeniedHandler;
 import com.fullDemo2.filter.JwtAuthenticationEntryPoint;
 import com.fullDemo2.filter.JwtAuthorizationFilter;
@@ -71,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
 //                .addFilterAfter(customAuthenticationFilter,jwtAuthorizationFilter.getClass());
-;
+        ;
     }
 
     @Bean

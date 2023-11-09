@@ -14,14 +14,14 @@ public class SecurityConstant {
     public static final String FORBIDDEN_MESSAGE = "You need to log in to access this page";
     public static final String ACCESS_DENIED_MESSAGE = "You do not have permission to access this page";
     public static final String OPTIONS_HTTP_METHOD = "OPTIONS";
-    public static final String[] PUBLIC_URLS = { "/user/login", "/user/register","/test/**","/h2-console/**"};
+    public static final String[] PUBLIC_URLS = {"/user/login", "/user/register", "/test/**", "/h2-console/**"};
 
 //            "/user/add","/test/**","/user/refreshtoken","/user/student/**" };
 
     //public static final String[] PUBLIC_URLS = { "**" };
 
-    public static final String ENCRYPTION_INSTANCE_NO_PADDING="AES/GCM/NoPadding";
-    public static final String ENCRYPTION_INSTANCE="AES/ECB/PKCS5Padding";
+    public static final String ENCRYPTION_INSTANCE_NO_PADDING = "AES/GCM/NoPadding";
+    public static final String ENCRYPTION_INSTANCE = "AES/ECB/PKCS5Padding";
 
 
     public static final int SECRET_KEY_SIZE = 128;

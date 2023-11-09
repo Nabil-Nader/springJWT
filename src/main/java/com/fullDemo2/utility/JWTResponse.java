@@ -2,9 +2,9 @@ package com.fullDemo2.utility;
 
 public class JWTResponse {
 
-    private String token ;
-    private String refreshToken ;
-    private String username ;
+    private String token;
+    private String refreshToken;
+    private String username;
 
     public JWTResponse(String token, String refreshToken, String username) {
         this.token = token;

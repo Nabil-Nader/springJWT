@@ -1,8 +1,8 @@
 package com.fullDemo2.filter;
 
- import com.fasterxml.jackson.databind.ObjectMapper;
- import com.fullDemo2.exception.HttpResponse;
- import org.springframework.security.access.AccessDeniedException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fullDemo2.exception.HttpResponse;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 
- import static com.fullDemo2.constant.SecurityConstant.ACCESS_DENIED_MESSAGE;
- import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static com.fullDemo2.constant.SecurityConstant.ACCESS_DENIED_MESSAGE;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Component

@@ -6,7 +6,6 @@ import com.fullDemo2.Entity.UserPrincipal;
 import com.fullDemo2.repo.MyUserRepo;
 import com.fullDemo2.services.impl.UserServiceImpl;
 import com.fullDemo2.utility.JWTTokenProvider;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -26,6 +25,7 @@ import static com.fullDemo2.constant.SecurityConstant.OPTIONS_HTTP_METHOD;
 import static com.fullDemo2.constant.SecurityConstant.TOKEN_PREFIX;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.OK;
+
 @Slf4j
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
@@ -34,12 +34,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private JWTTokenProvider jwtTokenProvider;
 
     @Autowired
-    private MyUserRepo userRepository ;
+    private MyUserRepo userRepository;
 
     @Autowired
-    private UserServiceImpl userDetailsService ;
-
-
+    private UserServiceImpl userDetailsService;
 
 
     @Override
@@ -64,7 +62,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 MyUser checkMyUser = userRepository.findMyUserByName(username);
 
 
-                if (jwtTokenProvider.isTokenValid (token) && SecurityContextHolder.getContext().getAuthentication() == null) {
+                if (jwtTokenProvider.isTokenValid(token) && SecurityContextHolder.getContext().getAuthentication() == null) {
 
                     UserPrincipal userPrincipal = (UserPrincipal) userDetailsService.loadUserByUsername(username);
 
@@ -87,38 +85,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             } catch (Exception e) {
                 logger.error("Cannot set user authentication: {}");
             }
-            }
+        }
 
         filterChain.doFilter(request, response);
     }
-
-
-    /***************************************************************************
-                    Helper Method
-     **********************************************************************/
-
-    private void allowForRefreshToken(ExpiredJwtException ex,HttpServletRequest request ){
-
-        /* Create a UsernamePasswordAuthenticationToken
-           with null value
-          */
-        Authentication auth = jwtTokenProvider.getAuthentication(null, null, null);
-
-        /* After setting the Authentication in the context, we specify
-            that the current user is authenticated.
-            so ut passes the spring security configuration successfully
-
-         */
-        SecurityContextHolder.getContext().setAuthentication(auth);
-
-        // Set the claims so that in controller we will be using it new JWT
-
-        request.setAttribute("claims",ex.getClaims());
-
-
-    }
-
-
-
 
 }

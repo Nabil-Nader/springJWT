@@ -2,29 +2,25 @@ package com.fullDemo2.utility;
 
 
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.fullDemo2.Entity.UserPrincipal;
-import com.fullDemo2.enumeration.Role;
 import io.jsonwebtoken.*;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import static com.fullDemo2.constant.SecurityConstant.*;
@@ -59,7 +55,7 @@ public class JWTTokenProvider implements Serializable {
         return generateTokenFromUsername(userPrincipal.getUsername());
     }
 
-    public String getUserNameFromToken(String token){
+    public String getUserNameFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey(secret)
                 .parseClaimsJws(token).getBody()
@@ -68,15 +64,12 @@ public class JWTTokenProvider implements Serializable {
     }
 
 
-
-
-
-   public String generateJwtTokenFromUser(UserPrincipal userPrincipal) {
+    public String generateJwtTokenFromUser(UserPrincipal userPrincipal) {
 
 
         String[] claims =
                 getClaimsFromUser(userPrincipal);
-        String [] newClaims= getClaimsFromUserRole(userPrincipal);
+        String[] newClaims = getClaimsFromUserRole(userPrincipal);
         return JWT.create()
 
                 .withIssuedAt(new Date()).withSubject(userPrincipal.getUsername())
@@ -86,15 +79,14 @@ public class JWTTokenProvider implements Serializable {
     }
 
 
-
-    public String generateRefreshToken(Map<String,Object> claims,String username ){
+    public String generateRefreshToken(Map<String, Object> claims, String username) {
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN))
-                .signWith(HS512,secret)
+                .signWith(HS512, secret)
                 .compact();
     }
 
@@ -104,17 +96,14 @@ public class JWTTokenProvider implements Serializable {
 
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() +EXPIRATION_TIME))
-                .signWith(HS512,secret)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(HS512, secret)
                 .compact();
     }
 
 
-
-
-
     public List<GrantedAuthority> getAuthorities(UserPrincipal user) {
-     //   UserDetails user = getUsernameFromToken(token);
+        //   UserDetails user = getUsernameFromToken(token);
         String[] claims = getClaimsFromUser(user);
         return stream(claims)
                 .map(SimpleGrantedAuthority::new)
@@ -135,15 +124,15 @@ public class JWTTokenProvider implements Serializable {
 
     public boolean isTokenValid(String token) {
 
-            try {
-                Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-                return true;
-            } catch (SignatureException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException ex) {
-                throw new BadCredentialsException("INVALID_CREDENTIALS", ex);
-            } catch (ExpiredJwtException ex) {
-                throw ex;
-            }
+        try {
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            return true;
+        } catch (SignatureException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException ex) {
+            throw new BadCredentialsException("INVALID_CREDENTIALS", ex);
+        } catch (ExpiredJwtException ex) {
+            throw ex;
         }
+    }
 
     public String getUsernameFromToken(String token) {
         Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
@@ -179,7 +168,7 @@ public class JWTTokenProvider implements Serializable {
 */
     private String[] getClaimsFromUser(UserPrincipal user) {
         List<String> authorities = new ArrayList<>();
-        for (GrantedAuthority grantedAuthority : user.getAuthorities()){
+        for (GrantedAuthority grantedAuthority : user.getAuthorities()) {
             authorities.add(grantedAuthority.getAuthority());
         }
         return authorities.toArray(new String[0]);
@@ -188,7 +177,7 @@ public class JWTTokenProvider implements Serializable {
     private String[] getClaimsFromUserRole(UserPrincipal user) {
         List<String> role = new ArrayList<>();
 
-            role.add(user.getUser().getRole());
+        role.add(user.getUser().getRole());
 
         return role.toArray(new String[0]);
     }
@@ -222,9 +211,6 @@ public class JWTTokenProvider implements Serializable {
     }
 
 */
-
-
-
 
 
 }

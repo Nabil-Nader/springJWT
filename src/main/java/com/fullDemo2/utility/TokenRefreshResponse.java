@@ -2,8 +2,8 @@ package com.fullDemo2.utility;
 
 public class TokenRefreshResponse {
 
-    private String accessToken ;
-    private String refreshToken ;
+    private String accessToken;
+    private String refreshToken;
 
     public TokenRefreshResponse(String accessToken, String refreshToken) {
         this.accessToken = accessToken;

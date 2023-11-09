@@ -12,13 +12,10 @@ import java.util.stream.Collectors;
 import static java.util.Arrays.stream;
 
 
-@Setter @Getter
+@Setter
+@Getter
 public class UserPrincipal implements UserDetails {
     private MyUser user;
-
-    private String universityName ;
-    private String collageName ;
-    private String branchName ;
 
     public UserPrincipal(MyUser user) {
         this.user = user;
@@ -26,7 +23,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return stream(this.user.getAuthorities()).map(SimpleGrantedAuthority::new)
+        return stream(this.user.getRole()).map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
 

@@ -14,7 +14,8 @@ public class HttpResponse {
     private String message;
 
     // Constructor never used. Can be (and should be) deleted
-    public HttpResponse() {}
+    public HttpResponse() {
+    }
 
     public HttpResponse(int httpStatusCode, HttpStatus httpStatus, String reason, String message) {
         this.timeStamp = new Date();
@@ -23,7 +24,6 @@ public class HttpResponse {
         this.reason = reason;
         this.message = message;
     }
-
 
 
     public Date getTimeStamp() {
